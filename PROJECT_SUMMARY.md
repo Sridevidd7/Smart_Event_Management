@@ -12,13 +12,12 @@
 ## 📋 Completed Components
 
 ### 1. Database Layer
-- ✓ `database.sql` - Complete MySQL schema with 6 tables
+- ✓ `database.sql` - Complete MySQL schema with 5 tables
   - users (with role-based access)
   - clubs
   - events (with foreign keys to clubs)
   - registrations (with foreign keys to events and users)
   - attendance (with foreign keys to registrations)
-  - feedback
 
 ### 2. Database Connectivity
 - ✓ `DBConnection.java` - JDBC connection management
@@ -134,11 +133,9 @@
 - ✓ Registrations have user_id (FK → users)
 - ✓ Registrations enforce UNIQUE constraint on (event_id, user_id)
 - ✓ Attendance has registration_id (FK → registrations)
-- ✓ Feedback has event_id and user_id (FKs)
 
 ### Data Integrity
 - ✓ UNIQUE constraints on club_name and email
-- ✓ CHECK constraint on feedback rating (1-5)
 - ✓ AUTO_INCREMENT for all IDs
 - ✓ TIMESTAMP fields with DEFAULT CURRENT_TIMESTAMP
 - ✓ Proper indexes for performance optimization

@@ -99,7 +99,6 @@ smartevent/
 - **events**: Events organized by clubs
 - **registrations**: Student registrations for events
 - **attendance**: QR-based check-in records
-- **feedback**: Event feedback from students
 
 ## User Roles
 
@@ -154,7 +153,6 @@ smartevent/
 
 - Email notifications for events and registrations
 - Advanced reporting and analytics
-- Event feedback system
 - Mobile app integration
 - Payment integration for paid events
 - Automated reminders

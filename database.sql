@@ -62,18 +62,6 @@ CREATE TABLE IF NOT EXISTS attendance (
     FOREIGN KEY (registration_id) REFERENCES registrations(registration_id)
 );
 
--- Feedback table
-CREATE TABLE IF NOT EXISTS feedback (
-    feedback_id INT PRIMARY KEY AUTO_INCREMENT,
-    event_id INT NOT NULL,
-    user_id INT NOT NULL,
-    rating INT CHECK(rating >= 1 AND rating <= 5),
-    comments TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (event_id) REFERENCES events(event_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
 -- Insert sample admin user
 INSERT INTO users (email, password, name, role) 
 VALUES ('admin@college.edu', 'admin123', 'Admin User', 'ADMIN')

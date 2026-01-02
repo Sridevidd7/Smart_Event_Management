@@ -137,11 +137,6 @@ src/main/java/com/college/eventclub/
    - FK to registrations
    - Check-in and check-out timestamps
 
-6. **feedback** - Event feedback
-   - 5 columns + timestamp
-   - FK to events and users
-   - Rating with CHECK constraint (1-5)
-
 ### Sample Data
 - 2 default users (admin + student)
 - Credentials pre-configured for quick testing
