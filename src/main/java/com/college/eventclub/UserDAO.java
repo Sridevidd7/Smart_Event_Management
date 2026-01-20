@@ -199,4 +199,42 @@ public class UserDAO {
         }
         return false;
     }
+
+    /**
+     * Count total admin users
+     */
+    public int countAdminUsers() {
+        String sql = "SELECT COUNT(*) as count FROM users WHERE role = 'ADMIN'";
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting admin users: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    /**
+     * Register admin approval request (for pending admin registrations)
+     */
+    public boolean registerAdminRequest(String name, String email, String password) {
+        String sql = "INSERT INTO admin_approval_requests (name, email, password, status) VALUES (?, ?, ?, 'PENDING')";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, email);
+            pstmt.setString(3, password);
+
+            int rows = pstmt.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            System.err.println("Error registering admin request: " + e.getMessage());
+        }
+        return false;
+    }
 }

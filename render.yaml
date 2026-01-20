@@ -1,0 +1,15 @@
+# Smart Event Management - Render Deployment Configuration
+
+# This file tells Render how to deploy your application
+
+# Build command - Run Maven to build the JAR
+build: mvn clean package -DskipTests
+
+# Start command - Run the built JAR file
+start: java -jar target/smartevent-1.0-SNAPSHOT.jar
+
+# Port - Application will run on port 8080
+PORT: 8080
+
+# Environment - Set to Java 17
+JAVA_VERSION: 17

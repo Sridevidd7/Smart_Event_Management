@@ -1,0 +1,17 @@
+target/
+.git
+.gitignore
+.DS_Store
+*.log
+node_modules/
+.gradle/
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+README.md
+CONTRIBUTING.md
+LICENSE
+.env
+.env.local

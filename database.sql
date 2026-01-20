@@ -62,6 +62,20 @@ CREATE TABLE IF NOT EXISTS attendance (
     FOREIGN KEY (registration_id) REFERENCES registrations(registration_id)
 );
 
+-- Admin Approval Requests table
+CREATE TABLE IF NOT EXISTS admin_approval_requests (
+    request_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    status ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
+    requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reviewed_by INT NULL,
+    reviewed_at TIMESTAMP NULL,
+    comments TEXT,
+    FOREIGN KEY (reviewed_by) REFERENCES users(user_id)
+);
+
 -- Insert sample admin user
 INSERT INTO users (email, password, name, role) 
 VALUES ('admin@college.edu', 'admin123', 'Admin User', 'ADMIN')

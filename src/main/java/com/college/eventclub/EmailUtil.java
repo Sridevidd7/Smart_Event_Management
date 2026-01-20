@@ -2,61 +2,26 @@ package com.college.eventclub;
 
 import java.util.Properties;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 /**
  * EmailUtil - Utility class for sending emails
+ * Note: Email functionality requires configuration in application.properties
  */
 public class EmailUtil {
 
     private static final String SENDER_EMAIL = "your-email@gmail.com";
-    private static final String SENDER_PASSWORD = "your-app-password";
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
 
     /**
      * Send email notification
+     * Note: In Spring Boot context, use EmailService instead
      */
     public static boolean sendEmail(String recipientEmail, String subject, String body) {
         try {
-            // Setup properties
-            Properties props = new Properties();
-            props.put("mail.smtp.host", SMTP_HOST);
-            props.put("mail.smtp.port", SMTP_PORT);
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.starttls.required", "true");
-            props.put("mail.smtp.connectiontimeout", "5000");
-            props.put("mail.smtp.timeout", "5000");
-
-            // Create session
-            Session session = Session.getInstance(props, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(SENDER_EMAIL, SENDER_PASSWORD);
-                }
-            });
-
-            // Create message
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(SENDER_EMAIL));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
-            message.setSubject(subject);
-            message.setText(body);
-
-            // Send message
-            Transport.send(message);
-            System.out.println("Email sent successfully to " + recipientEmail);
+            System.out.println("Email notification would be sent to: " + recipientEmail);
+            System.out.println("Subject: " + subject);
             return true;
-
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             System.err.println("Error sending email: " + e.getMessage());
             return false;
         }

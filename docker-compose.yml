@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: event_club_db
+    environment:
+      MYSQL_ROOT_PASSWORD: Sridevi@2006
+      MYSQL_DATABASE: event_club_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Sridevi@2006
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart_event_management
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: event_club_db
+      DB_USER: root
+      DB_PASSWORD: Sridevi@2006
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  mysql_data:

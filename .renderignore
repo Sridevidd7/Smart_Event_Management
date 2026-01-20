@@ -1,0 +1,17 @@
+# Render ignore - Files not needed in production
+target/
+.git
+.gitignore
+*.bat
+*.sh
+.DS_Store
+.vscode/
+.idea/
+*.iml
+node_modules/
+*.log
+.classpath
+.project
+.settings/
+*.tmp
+.docker/

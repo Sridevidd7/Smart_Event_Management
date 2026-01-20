@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Event Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        .navbar a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .navbar a:hover {
+            color: #764ba2;
+        }
+
+        .content {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .auth-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .switch-form a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        .card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        .alert {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="navbar" id="navbar" style="display: none;">
+            <h1>Smart Event Management</h1>
+            <div>
+                <span id="userGreeting"></span>
+                <a onclick="logout()">Logout</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Authentication Forms -->
+            <div id="authContainer">
+                <!-- Login Form -->
+                <div id="loginForm" class="auth-form">
+                    <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Login</h2>
+                    <div id="loginError" class="alert alert-error hidden"></div>
+                    
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <button onclick="handleLogin()">Login</button>
+                    
+                    <div class="switch-form">
+                        Don't have an account? <a onclick="showRegister()">Register here</a>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="auth-form hidden">
+                    <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Register</h2>
+                    <div id="registerError" class="alert alert-error hidden"></div>
+                    
+                    <div class="form-group">
+                        <label for="regName">Full Name:</label>
+                        <input type="text" id="regName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regEmail">Email:</label>
+                        <input type="email" id="regEmail" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPassword">Password:</label>
+                        <input type="password" id="regPassword" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <button onclick="handleRegister()">Register</button>
+                    
+                    <div class="switch-form">
+                        Already have an account? <a onclick="showLogin()">Login here</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard (shown after login) -->
+            <div id="dashboard" class="dashboard">
+                <div class="welcome">
+                    <h2>Welcome to Smart Event Management System</h2>
+                    <p>Manage your events and registrations effortlessly</p>
+                </div>
+
+                <!-- Events Section -->
+                <div class="card">
+                    <h3>📅 Upcoming Events</h3>
+                    <button onclick="loadEvents()">Load Events</button>
+                    <table id="eventsTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsBody">
+                        </tbody>
+                    </table>
+                    <div id="noEvents" style="text-align: center; color: #999; padding: 20px;">No events found</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Base URL
+        const API_URL = 'http://localhost:8080/api';
+
+        // Show Register Form
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+        }
+
+        // Show Login Form
+        function showLogin() {
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+
+        // Handle Login
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (!email || !password) {
+                errorDiv.textContent = 'Please fill in all fields';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('user', JSON.stringify(data));
+                    showDashboard(data);
+                    errorDiv.classList.add('hidden');
+                } else {
+                    errorDiv.textContent = data.error || 'Login failed';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Error: ' + error.message;
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
+        // Handle Register
+        async function handleRegister() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const errorDiv = document.getElementById('registerError');
+
+            if (!name || !email || !password) {
+                errorDiv.textContent = 'Please fill in all fields';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    errorDiv.classList.add('hidden');
+                    alert(data.message);
+                    showLogin();
+                } else {
+                    errorDiv.textContent = data.error || 'Registration failed';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Error: ' + error.message;
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
+        // Show Dashboard
+        function showDashboard(user) {
+            document.getElementById('authContainer').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('navbar').style.display = 'flex';
+            document.getElementById('userGreeting').textContent = `Welcome, ${user.name} (${user.role})`;
+        }
+
+        // Load Events
+        async function loadEvents() {
+            try {
+                const response = await fetch(`${API_URL}/events`);
+                const data = await response.json();
+
+                const table = document.getElementById('eventsTable');
+                const tbody = document.getElementById('eventsBody');
+                const noEvents = document.getElementById('noEvents');
+
+                if (data.success && data.data && data.data.length > 0) {
+                    tbody.innerHTML = '';
+                    data.data.forEach(event => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${event.name || event.eventName || 'N/A'}</td>
+                                <td>${event.description || 'N/A'}</td>
+                                <td>${event.date || 'N/A'}</td>
+                                <td>${event.location || 'N/A'}</td>
+                                <td><button onclick="alert('Register for event')">Register</button></td>
+                            </tr>
+                        `;
+                    });
+                    table.style.display = 'table';
+                    noEvents.style.display = 'none';
+                } else {
+                    table.style.display = 'none';
+                    noEvents.style.display = 'block';
+                }
+            } catch (error) {
+                alert('Error loading events: ' + error.message);
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('user');
+            document.getElementById('authContainer').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('navbar').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            showLogin();
+        }
+
+        // Check if user is already logged in
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                showDashboard(user);
+            }
+        };
+    </script>
+</body>
+</html>

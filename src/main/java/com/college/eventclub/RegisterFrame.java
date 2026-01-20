@@ -1,8 +1,25 @@
 package com.college.eventclub;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  * RegisterFrame - User registration form for new account creation
@@ -121,7 +138,14 @@ public class RegisterFrame extends JFrame {
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-        roleComboBox = new JComboBox<>(new String[]{"STUDENT", "ADMIN"});
+        // Check if any admin exists - if yes, only allow STUDENT registration
+        int adminCount = userDAO.countAdminUsers();
+        if (adminCount > 0) {
+            roleComboBox = new JComboBox<>(new String[]{"STUDENT"});
+        } else {
+            // First admin can be created
+            roleComboBox = new JComboBox<>(new String[]{"STUDENT", "ADMIN"});
+        }
         roleComboBox.setSelectedIndex(0); // Default to STUDENT
         formPanel.add(roleComboBox, gbc);
 
@@ -210,6 +234,20 @@ public class RegisterFrame extends JFrame {
         if (userDAO.getUserByEmail(email) != null) {
             JOptionPane.showMessageDialog(this, "Email already registered", "Registration Error", JOptionPane.ERROR_MESSAGE);
             return;
+        }
+
+        // Handle ADMIN role registration
+        if ("ADMIN".equals(role)) {
+            // Check if admin already exists
+            if (userDAO.countAdminUsers() > 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Admin account already exists!\n\n" +
+                    "Only one administrator can be registered in the system.\n" +
+                    "Please register as a STUDENT instead.", 
+                    "Admin Limit Reached", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
         }
 
         // Create new user
